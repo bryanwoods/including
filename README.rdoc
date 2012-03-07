@@ -1,10 +1,7 @@
 = including
 
-* An observation: Other languages allow for more granular loading of only
-desired methods and functions from module code.
-
+* An observation: Other languages allow for more granular loading of only desired methods and functions from module code.
 * An experiment: How might this be done in Ruby?
-
 * A warning: Running this code in production might not be wise.
 
 = How does it work?
