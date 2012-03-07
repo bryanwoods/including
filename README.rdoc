@@ -24,7 +24,7 @@ Let's say you've got a module:
 And you want to mix it in to a class. But wait! the `foo` method might
 conflict with some other `foo`!
   class Bar
-    including Foo, only: [:bar]
+    including Foo, except: [:foo]
   end
   
   bar = Bar.new
