@@ -1,11 +1,50 @@
 = including
 
-An observation: Other languages allow for more granular loading of only
+* An observation: Other languages allow for more granular loading of only
 desired methods and functions from module code.
 
-An experiment: How might this be done in Ruby?
+* An experiment: How might this be done in Ruby?
 
-A warning: Running this code in production might not be wise.
+* A warning: Running this code in production might not be wise.
+
+= How does it work?
+
+Let's say you've got a module:
+  module Foo
+    def foo
+      "foo"
+    end
+  
+    def bar
+      "bar"
+    end
+  
+    def baz
+      "baz"
+    end
+  end
+
+And you want to mix it in to a class. But wait! the `foo` method might
+conflict with some other `foo`!
+  class Bar
+    including Foo, only: [:bar]
+  end
+  
+  bar = Bar.new
+  bar.bar # "bar"
+  bar.foo # NoMethodError
+
+That's basically it. You can pass an array of `only` the methods you'd
+like to mix in, or an array of exceptions, via `except`.
+
+  class Quux
+    including Foo, except: [:foo, :baz]
+  end
+  
+  quux = Quux.new
+  quux.bar # "bar"
+  quux.foo # NoMethodError
+  quux.baz # NoMethodError
 
 == Copyright
 
