@@ -55,17 +55,34 @@ describe "Object" do
   end
 
   context "provided an 'except' options argumenmt" do
-    before do
-      Bar.class_eval { including Foo, except: [:foo] }
+    context "given an array of symbols" do
+      before do
+        Bar.class_eval { including Foo, except: [:foo] }
+      end
+
+      it "undefines all methods not listed in the 'except' array" do
+        bar = Bar.new
+
+        expect { bar.foo }.to raise_error(NoMethodError)
+
+        bar.bar.should == "bar"
+        bar.baz.should == "baz"
+      end
     end
 
-    it "undefines all methods not listed in the 'except' array" do
-      bar = Bar.new
+    context "given an array with at least one string" do
+      before do
+        Bar.class_eval { including Foo, except: ["foo"] }
+      end
 
-      expect { bar.foo }.to raise_error(NoMethodError)
+      it "undefines all methods not listed in the 'except' array" do
+        bar = Bar.new
 
-      bar.bar.should == "bar"
-      bar.baz.should == "baz"
+        expect { bar.foo }.to raise_error(NoMethodError)
+
+        bar.bar.should == "bar"
+        bar.baz.should == "baz"
+      end
     end
   end
 end
