@@ -10,7 +10,7 @@ class Object
 
     (include included_module).tap do
       excluded_methods.each do |meth|
-        included_module.send(:undef_method, :"#{meth}")
+        included_module.send(:undef_method, meth)
       end
     end
   end
