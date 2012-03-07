@@ -13,16 +13,20 @@ require 'rake'
 
 require 'jeweler'
 Jeweler::Tasks.new do |gem|
-  # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
   gem.name = "including"
-  gem.homepage = "http://github.com/howaboutwe/including"
+  gem.homepage = "http://github.com/bryanwoods/including"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
-  gem.email = "pair+bryan@howaboutwe.com"
+  gem.summary = %Q{Including mixes in only what you want}
+  gem.description = %Q{
+    An observation: Other languages allow for more granular loading of only 
+    desired methods and functions from module code.
+
+    An experiment: How might this be done in Ruby?
+  }
+  gem.email = "bryanwoods4e@gmail.com"
   gem.authors = ["Bryan Woods"]
-  # dependencies defined in Gemfile
 end
+
 Jeweler::RubygemsDotOrgTasks.new
 
 require 'rspec/core'
