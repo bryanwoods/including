@@ -43,7 +43,10 @@ like to mix in, or an array of exceptions, via `except`.
   quux.foo # NoMethodError
   quux.baz # NoMethodError
 
-== Copyright
+= Installation
+  gem install including
+
+= Copyright
 
 Copyright (c) 2012 Bryan Woods. See LICENSE.txt for
 further details.
