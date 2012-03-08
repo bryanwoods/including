@@ -35,13 +35,13 @@ That's basically it. You can pass an array of `only` the methods you'd
 like to mix in, or an array of exceptions, via `except`.
 
   class Quux
-    including Foo, except: [:foo, :baz]
+    including Foo, only: [:foo, :baz]
   end
   
   quux = Quux.new
-  quux.bar # "bar"
-  quux.foo # NoMethodError
-  quux.baz # NoMethodError
+  quux.foo # "foo"
+  quux.bar # NoMethodError
+  quux.baz # "baz"
 
 = Installation
   gem install including
