@@ -37,51 +37,51 @@ describe "Object" do
         end
       end
     end
-  end
 
-  context "provided an 'only' options argument" do
-    before do
-      Bar.class_eval { including Foo, only: [:foo, :bar] }
-    end
-
-    it "undefines all methods listed in the 'only' array" do
-      bar = Bar.new
-
-      bar.foo.should == "foo"
-      bar.bar.should == "bar"
-
-      expect { bar.baz }.to raise_error(NoMethodError)
-    end
-  end
-
-  context "provided an 'except' options argumenmt" do
-    context "given an array of symbols" do
+    context "provided an 'only' options argument" do
       before do
-        Bar.class_eval { including Foo, except: [:foo] }
+        Bar.class_eval { including Foo, only: [:foo, :bar] }
       end
 
-      it "undefines all methods not listed in the 'except' array" do
+      it "undefines all methods not listed in the 'only' array" do
         bar = Bar.new
 
-        expect { bar.foo }.to raise_error(NoMethodError)
-
+        bar.foo.should == "foo"
         bar.bar.should == "bar"
-        bar.baz.should == "baz"
+
+        expect { bar.baz }.to raise_error(NoMethodError)
       end
     end
 
-    context "given an array with at least one string" do
-      before do
-        Bar.class_eval { including Foo, except: ["foo"] }
+    context "provided an 'except' options argumenmt" do
+      context "given an array of symbols" do
+        before do
+          Bar.class_eval { including Foo, except: [:foo] }
+        end
+
+        it "undefines all methods listed in the 'except' array" do
+          bar = Bar.new
+
+          expect { bar.foo }.to raise_error(NoMethodError)
+
+          bar.bar.should == "bar"
+          bar.baz.should == "baz"
+        end
       end
 
-      it "undefines all methods not listed in the 'except' array" do
-        bar = Bar.new
+      context "provided an array with at least one string" do
+        before do
+          Bar.class_eval { including Foo, except: ["foo"] }
+        end
 
-        expect { bar.foo }.to raise_error(NoMethodError)
+        it "undefines all methods listed in the 'except' array" do
+          bar = Bar.new
 
-        bar.bar.should == "bar"
-        bar.baz.should == "baz"
+          expect { bar.foo }.to raise_error(NoMethodError)
+
+          bar.bar.should == "bar"
+          bar.baz.should == "baz"
+        end
       end
     end
   end
