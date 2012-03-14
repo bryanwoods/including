@@ -1,4 +1,4 @@
-class Object
+class Module
   def including(mixin, options = {})
     include mixin and return unless options[:only] || options[:except]
     included_module = mixin.dup

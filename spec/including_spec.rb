@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
-describe "Object" do
+describe "Module" do
   before do
     module Foo
       def foo; "foo"; end
