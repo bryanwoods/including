@@ -4,9 +4,7 @@ class Module
     included_module = mixin.dup
 
     if options[:except]
-      excluded_methods = options[:except]
-
-      undefine(included_module, excluded_methods) and return
+      undefine(included_module, options[:except]) and return
     else
       included_methods = included_module.instance_methods(false)
       excluded_methods = Array(options[:only]).map(&:to_sym)
