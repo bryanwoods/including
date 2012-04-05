@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
-describe "Module" do
+describe Module do
   before do
     module Foo
       def foo; "foo"; end
@@ -12,15 +12,15 @@ describe "Module" do
   end
 
   describe "#including" do
-    context "provided no options arguments" do
-      context "provided a valid module" do
+    context "given no options arguments" do
+      context "given a valid module" do
         before do
           Bar.class_eval do
             including Foo
           end
         end
 
-        it "mixes in the provided module" do
+        it "mixes in the given module" do
           bar = Bar.new
 
           bar.foo.should == "foo"
@@ -29,7 +29,7 @@ describe "Module" do
         end
       end
 
-      context "provided an invalid module" do
+      context "given an invalid module" do
         it "raises an exception" do
           expect do
             Bar.class_eval { including NotAModule }
@@ -38,22 +38,52 @@ describe "Module" do
       end
     end
 
-    context "provided an 'only' options argument" do
-      before do
-        Bar.class_eval { including Foo, only: [:foo, :bar] }
+    context "given an 'only' options argument" do
+      context "given an array" do
+        before do
+          Bar.class_eval { including Foo, only: [:foo, :bar] }
+        end
+
+        it "undefines all methods not listed in the 'only' array" do
+          bar = Bar.new
+
+          bar.foo.should == "foo"
+          bar.bar.should == "bar"
+
+          expect { bar.baz }.to raise_error(NoMethodError)
+        end
       end
 
-      it "undefines all methods not listed in the 'only' array" do
-        bar = Bar.new
+      context "given a symbol" do
+        before do
+          Bar.class_eval { including Foo, only: :bar }
+        end
 
-        bar.foo.should == "foo"
-        bar.bar.should == "bar"
+        it "undefines all other methods" do
+          bar = Bar.new
 
-        expect { bar.baz }.to raise_error(NoMethodError)
+          bar.bar.should == "bar"
+
+          expect { bar.foo }.to raise_error(NoMethodError)
+        end
+      end
+
+      context "given a string" do
+        before do
+          Bar.class_eval { including Foo, only: "bar" }
+        end
+
+        it "undefines all other methods" do
+          bar = Bar.new
+
+          bar.bar.should == "bar"
+
+          expect { bar.foo }.to raise_error(NoMethodError)
+        end
       end
     end
 
-    context "provided an 'except' options argumenmt" do
+    context "given an 'except' options argumenmt" do
       context "given an array of symbols" do
         before do
           Bar.class_eval { including Foo, except: [:foo] }
@@ -69,12 +99,42 @@ describe "Module" do
         end
       end
 
-      context "provided an array with at least one string" do
+      context "given an array with at least one string" do
         before do
           Bar.class_eval { including Foo, except: ["foo"] }
         end
 
         it "undefines all methods listed in the 'except' array" do
+          bar = Bar.new
+
+          expect { bar.foo }.to raise_error(NoMethodError)
+
+          bar.bar.should == "bar"
+          bar.baz.should == "baz"
+        end
+      end
+
+      context "given a symbol" do
+        before do
+          Bar.class_eval { including Foo, except: :foo }
+        end
+
+        it "undefines the given method" do
+          bar = Bar.new
+
+          expect { bar.foo }.to raise_error(NoMethodError)
+
+          bar.bar.should == "bar"
+          bar.baz.should == "baz"
+        end
+      end
+
+      context "given a string" do
+        before do
+          Bar.class_eval { including Foo, except: "foo" }
+        end
+
+        it "undefines the given method" do
           bar = Bar.new
 
           expect { bar.foo }.to raise_error(NoMethodError)
