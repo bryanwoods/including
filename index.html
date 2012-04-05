@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Including by bryanwoods</title>
+    
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Including</h1>
+        <p>An experiment to implement granular loading of module code in Ruby</p>
+        <p class="view"><a href="https://github.com/bryanwoods/including">View the Project on GitHub <small>bryanwoods/including</small></a></p>
+        <ul>
+          <li><a href="https://github.com/bryanwoods/including/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/bryanwoods/including/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/bryanwoods/including">Fork On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h2>including</h2>
+
+<ul>
+<li>An observation: Other languages allow for more granular loading of only desired methods and functions from module code.</li>
+<li>An experiment: How might this be done in Ruby?</li>
+<li>A warning: Running this code in production might not be wise.</li>
+</ul><h3>How does it work?</h3>
+
+<p>Let's say you've got a module:</p>
+
+<div class="highlight">
+<pre>  <span class="k">module</span> <span class="nn">Foo</span>
+    <span class="k">def</span> <span class="nf">foo</span>
+      <span class="s2">"foo"</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">bar</span>
+      <span class="s2">"bar"</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">baz</span>
+      <span class="s2">"baz"</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+</pre>
+</div>
+
+
+<p>And you want to mix it in to a class. But wait! the <code>foo</code> method might
+conflict with some other <code>foo</code>!</p>
+
+<div class="highlight">
+<pre>  <span class="k">class</span> <span class="nc">Bar</span>
+    <span class="n">including</span> <span class="no">Foo</span><span class="p">,</span> <span class="n">except</span><span class="p">:</span> <span class="s2">"foo"</span>
+  <span class="k">end</span>
+
+  <span class="n">bar</span> <span class="o">=</span> <span class="no">Bar</span><span class="o">.</span><span class="n">new</span>
+  <span class="n">bar</span><span class="o">.</span><span class="n">bar</span> <span class="c1"># "bar"</span>
+  <span class="n">bar</span><span class="o">.</span><span class="n">foo</span> <span class="c1"># NoMethodError</span>
+</pre>
+</div>
+
+
+<p>That's basically it. You can pass an array of <code>only</code> the methods you'd
+like to mix in, or an array of exceptions, via <code>except</code>.</p>
+
+<div class="highlight">
+<pre>  <span class="k">class</span> <span class="nc">Quux</span>
+    <span class="n">including</span> <span class="no">Foo</span><span class="p">,</span> <span class="n">only</span><span class="p">:</span> <span class="o">[</span><span class="ss">:foo</span><span class="p">,</span> <span class="ss">:baz</span><span class="o">]</span>
+  <span class="k">end</span>
+
+  <span class="n">quux</span> <span class="o">=</span> <span class="no">Quux</span><span class="o">.</span><span class="n">new</span>
+  <span class="n">quux</span><span class="o">.</span><span class="n">foo</span> <span class="c1"># "foo"</span>
+  <span class="n">quux</span><span class="o">.</span><span class="n">bar</span> <span class="c1"># NoMethodError</span>
+  <span class="n">quux</span><span class="o">.</span><span class="n">baz</span> <span class="c1"># "baz"</span>
+</pre>
+</div>
+
+
+<h3>Installation</h3>
+
+<p><code>
+  gem install including
+</code></p>
+
+<h3>Copyright</h3>
+
+<p>Copyright (c) 2012 Bryan Woods. See LICENSE.txt for
+further details.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/bryanwoods">bryanwoods</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+  </body>
+</html>
